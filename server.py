@@ -79,6 +79,18 @@ def fuzzy_search():
     return ara.fuzzy_search(query)
 
 
+@app.route("/recs", methods=["GET"])
+def get_rec_for_genre():
+    args = request.args
+    query = args.get("genre")
+    return ara.get_rec_for_genre(query)
+
+
+@app.route("/recent", methods=["GET"])
+def get_recently_rated():
+    return ara.get_recently_rated()
+
+
 @app.errorhandler(404)
 def not_found(e):
     return ("L + Ratio", 404)

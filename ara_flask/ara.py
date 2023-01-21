@@ -4,6 +4,8 @@ from ara_flask.transactions import (
     get_anime_txn,
     get_animes_to_rate_txn,
     get_bot_animes_txn,
+    get_rec_for_genre_txn,
+    get_recently_rated_txn,
     get_top_animes_txn,
     rate_anime_txn,
 )
@@ -82,4 +84,14 @@ class Ara:
     def get_animes_to_rate(self):
         return run_transaction(
             self.sessionmaker, lambda session: get_animes_to_rate_txn(session)
+        )
+
+    def get_recently_rated(self):
+        return run_transaction(
+            self.sessionmaker, lambda session: get_recently_rated_txn(session)
+        )
+
+    def get_rec_for_genre(self, genre):
+        return run_transaction(
+            self.sessionmaker, lambda session: get_rec_for_genre_txn(session, genre)
         )

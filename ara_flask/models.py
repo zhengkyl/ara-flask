@@ -1,6 +1,6 @@
 import os
-from sqlalchemy import ARRAY, Column, Integer, String, Float, create_engine
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Column, Integer, String, Float, create_engine
+from sqlalchemy.dialects.postgresql import UUID, ARRAY
 from sqlalchemy.orm import declarative_base, scoped_session, sessionmaker
 
 Base = declarative_base()

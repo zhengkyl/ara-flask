@@ -3,6 +3,8 @@ from ara_flask.models import Anime
 from sqlalchemy import and_, func, or_
 from random import randrange
 
+recently_rated = []
+
 
 def get_anime_txn(session, id=None, title=None):
     if id:
@@ -53,18 +55,24 @@ RATING_MULTIPLIER = 50
 
 
 def rate_anime_txn(session, id, score):
-    a = session.query(Anime).filter(Anime.id == id)
+    a = session.query(Anime).filter(Anime.id == id).first()
 
     bounded_score = min(max(score, 0), 10)
 
     if a.members == 0:
         a.members = 1
 
-    new_score = min(
-        max(RATING_MULTIPLIER * (bounded_score - a.score) / a.members, 0), 10
-    )
+    diff = RATING_MULTIPLIER * (bounded_score - a.score) / a.members
 
-    a.score = new_score
+    a.members += 1
+
+    a.score = min(max(a.score + diff, 0), 10)
+
+    global recently_rated
+    recently_rated.append({"id": a.id, "score": bounded_score})
+
+    if len(recently_rated) > 10:
+        recently_rated = recently_rated[1:]
 
 
 def get_top_animes_txn(session):
@@ -99,3 +107,26 @@ def get_animes_to_rate_txn(session):
     chosen = random.choices(temp, k=1)
 
     return chosen[0]
+
+
+def get_recently_rated_txn(session):
+    return list(
+        map(
+            lambda id_score: {
+                "anime": session.query(Anime)
+                .filter(Anime.id == id_score["id"])
+                .first()
+                .as_dict(),
+                "score": id_score["score"],
+            },
+            recently_rated,
+        )
+    )
+
+
+def get_rec_for_genre_txn(session, genre):
+    animes = session.query(Anime).filter(Anime.genre.contains([genre])).limit(100)
+    temp = list(map(lambda anime: anime.as_dict(), animes))
+    chosen = random.choices(temp, k=10)
+
+    return chosen

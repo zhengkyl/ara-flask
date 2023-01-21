@@ -1,5 +1,7 @@
+import random
 from ara_flask.models import Anime
 from sqlalchemy import and_, func, or_
+from random import randrange
 
 
 def get_anime_txn(session, id=None, title=None):
@@ -85,3 +87,15 @@ def fuzzy_search_txn(session, query):
         .limit(10)
     )
     return list(map(lambda anime: anime.as_dict(), animes))
+
+
+def get_animes_to_rate_txn(session):
+    candidates = session.query(Anime).order_by(Anime.members.desc()).limit(200)
+    candidates2 = session.query(Anime).order_by(func.random()).limit(50)
+
+    candidates3 = candidates.union(candidates, candidates2)
+
+    temp = list(map(lambda anime: anime.as_dict(), candidates3))
+    chosen = random.choices(temp, k=1)
+
+    return chosen[0]

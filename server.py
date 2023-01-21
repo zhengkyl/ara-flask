@@ -57,6 +57,11 @@ def rate_anime():
     return ("", 204)
 
 
+@app.route("/rate", methods=["GET"])
+def get_animes_to_rate():
+    return ara.get_animes_to_rate()
+
+
 @app.route("/top", methods=["GET"])
 def get_top_animes():
     return ara.get_top_animes()

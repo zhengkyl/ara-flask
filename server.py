@@ -3,11 +3,13 @@ from ara_flask.ara import Ara
 
 from flask import Flask, abort, jsonify, request
 from dotenv import load_dotenv
-
+from flask_cors import CORS
 
 load_dotenv()
 
 app = Flask(__name__)
+
+CORS(app)
 
 app.config.from_mapping(SECRET_KEY="dev", DB_URI=os.environ["DB_URI"])
 

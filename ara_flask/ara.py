@@ -1,5 +1,6 @@
 from ara_flask.transactions import (
     add_anime_txn,
+    fuzzy_search_txn,
     get_anime_txn,
     get_bot_animes_txn,
     get_top_animes_txn,
@@ -70,4 +71,9 @@ class Ara:
     def get_bot_animes(self):
         return run_transaction(
             self.sessionmaker, lambda session: get_bot_animes_txn(session)
+        )
+
+    def fuzzy_search(self, query):
+        return run_transaction(
+            self.sessionmaker, lambda session: fuzzy_search_txn(session, query)
         )

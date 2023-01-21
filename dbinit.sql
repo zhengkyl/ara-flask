@@ -1,6 +1,6 @@
 USE defaultdb;
 
--- DROP TABLE animes;
+CREATE EXTENSION pg_trgm;
 
 CREATE TABLE IF NOT EXISTS animes (
       id INTEGER PRIMARY KEY NOT NULL,

@@ -1,4 +1,5 @@
 from ara_flask.models import Anime
+from sqlalchemy import and_, func, or_
 
 
 def get_anime_txn(session, id=None, title=None):
@@ -73,4 +74,14 @@ def get_top_animes_txn(session):
 def get_bot_animes_txn(session):
     animes = session.query(Anime).order_by(Anime.score.asc()).limit(10)
 
+    return list(map(lambda anime: anime.as_dict(), animes))
+
+
+def fuzzy_search_txn(session, query):
+    animes = (
+        session.query(Anime)
+        .filter(func.similarity(func.lower(Anime.title), func.lower(query)) > 0.3)
+        .order_by(Anime.popularity.asc())
+        .limit(10)
+    )
     return list(map(lambda anime: anime.as_dict(), animes))

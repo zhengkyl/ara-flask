@@ -67,6 +67,13 @@ def get_bot_animes():
     return ara.get_bot_animes()
 
 
+@app.route("/search", methods=["GET"])
+def fuzzy_search():
+    args = request.args
+    query = args.get("query")
+    return ara.fuzzy_search(query)
+
+
 @app.errorhandler(404)
 def not_found(e):
     return ("L + Ratio", 404)

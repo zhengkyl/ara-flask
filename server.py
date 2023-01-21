@@ -57,8 +57,18 @@ def rate_anime():
     return ("", 204)
 
 
+@app.route("/top", methods=["GET"])
+def get_top_animes():
+    return ara.get_top_animes()
+
+
+@app.route("/bot", methods=["GET"])
+def get_bot_animes():
+    return ara.get_bot_animes()
+
+
 @app.errorhandler(404)
-def not_found():
+def not_found(e):
     return ("L + Ratio", 404)
 
 

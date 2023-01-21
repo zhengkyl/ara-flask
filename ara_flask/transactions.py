@@ -62,3 +62,15 @@ def rate_anime_txn(session, id, score):
     )
 
     a.score = new_score
+
+
+def get_top_animes_txn(session):
+    animes = session.query(Anime).order_by(Anime.score.desc()).limit(10)
+
+    return list(map(lambda anime: anime.as_dict(), animes))
+
+
+def get_bot_animes_txn(session):
+    animes = session.query(Anime).order_by(Anime.score.asc()).limit(10)
+
+    return list(map(lambda anime: anime.as_dict(), animes))

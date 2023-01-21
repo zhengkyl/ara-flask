@@ -4,7 +4,6 @@ from ara_flask.ara import Ara
 from flask import Flask, abort, jsonify, request
 from dotenv import load_dotenv
 
-# from ara_flask.models import db_session
 
 load_dotenv()
 
@@ -51,5 +50,17 @@ def add_anime():
     return ("", 204)
 
 
+@app.route("/rate", methods=["POST"])
+def rate_anime():
+    body = request.json
+    ara.rate_anime(body["id"], body["score"])
+    return ("", 204)
+
+
+@app.errorhandler(404)
+def not_found():
+    return ("L + Ratio", 404)
+
+
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0", port=os.environ["PORT"])

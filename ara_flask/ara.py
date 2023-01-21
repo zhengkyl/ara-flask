@@ -1,4 +1,4 @@
-from ara_flask.transactions import add_anime_txn, get_anime_txn
+from ara_flask.transactions import add_anime_txn, get_anime_txn, rate_anime_txn
 from sqlalchemy_cockroachdb import run_transaction
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -49,4 +49,9 @@ class Ara:
                 img_url,
                 link,
             ),
+        )
+
+    def rate_anime(self, id, score):
+        return run_transaction(
+            self.sessionmaker, lambda session: rate_anime_txn(session, id, score)
         )

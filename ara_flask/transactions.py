@@ -7,6 +7,8 @@ recently_rated = []
 
 
 def get_anime_txn(session, id=None, title=None):
+    a = None
+
     if id:
         a = session.query(Anime).filter(Anime.id == id).first()
     elif title:
@@ -152,7 +154,9 @@ def get_fixed_animes_txn(session):
     animes = (
         session.query(Anime)
         .filter(
-            Anime.id.in_((21, 1735, 269, 16498, 38000, 5114, 11061, 1535, 223, 47917))
+            Anime.id.in_(
+                (21, 1735, 269, 16498, 38000, 5114, 11061, 1535, 47917, 999999)
+            )
         )
         .order_by(Anime.score.asc())
         .limit(10)

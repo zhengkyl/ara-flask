@@ -66,12 +66,21 @@ def get_animes_to_rate():
 
 @app.route("/top", methods=["GET"])
 def get_top_animes():
-    return ara.get_top_animes()
+    args = request.args
+    query = args.get("genre")
+    return ara.get_top_animes(query)
 
 
 @app.route("/bot", methods=["GET"])
 def get_bot_animes():
-    return ara.get_bot_animes()
+    args = request.args
+    query = args.get("genre")
+    return ara.get_bot_animes(query)
+
+
+@app.route("/pick", methods=["GET"])
+def get_pick_animes():
+    return ara.get_fixed_animes()
 
 
 @app.route("/search", methods=["GET"])

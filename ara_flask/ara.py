@@ -4,6 +4,7 @@ from ara_flask.transactions import (
     get_anime_txn,
     get_animes_to_rate_txn,
     get_bot_animes_txn,
+    get_fixed_animes_txn,
     get_rec_for_genre_txn,
     get_recently_rated_txn,
     get_top_animes_txn,
@@ -66,14 +67,14 @@ class Ara:
             self.sessionmaker, lambda session: rate_anime_txn(session, id, score)
         )
 
-    def get_top_animes(self):
+    def get_top_animes(self, genre):
         return run_transaction(
-            self.sessionmaker, lambda session: get_top_animes_txn(session)
+            self.sessionmaker, lambda session: get_top_animes_txn(session, genre)
         )
 
-    def get_bot_animes(self):
+    def get_bot_animes(self, genre):
         return run_transaction(
-            self.sessionmaker, lambda session: get_bot_animes_txn(session)
+            self.sessionmaker, lambda session: get_bot_animes_txn(session, genre)
         )
 
     def fuzzy_search(self, query):
@@ -94,4 +95,9 @@ class Ara:
     def get_rec_for_genre(self, genre):
         return run_transaction(
             self.sessionmaker, lambda session: get_rec_for_genre_txn(session, genre)
+        )
+
+    def get_fixed_animes(self):
+        return run_transaction(
+            self.sessionmaker, lambda session: get_fixed_animes_txn(session)
         )

@@ -57,7 +57,7 @@ RATING_MULTIPLIER = 50
 def rate_anime_txn(session, id, score):
     a = session.query(Anime).filter(Anime.id == id).first()
 
-    bounded_score = min(max(score, 0), 10)
+    bounded_score = min(max(score, 0), 5)
 
     if a.members == 0:
         a.members = 1
@@ -66,7 +66,7 @@ def rate_anime_txn(session, id, score):
 
     a.members += 1
 
-    a.score = min(max(a.score + diff, 0), 10)
+    a.score = min(max(a.score + diff, 0), 5)
 
     global recently_rated
     recently_rated.append({"id": a.id, "score": bounded_score})
@@ -75,14 +75,24 @@ def rate_anime_txn(session, id, score):
         recently_rated = recently_rated[1:]
 
 
-def get_top_animes_txn(session):
-    animes = session.query(Anime).order_by(Anime.score.desc()).limit(10)
+def get_top_animes_txn(session, genre):
+    animes = (
+        session.query(Anime)
+        .filter(Anime.genre.contains(array([genre])))
+        .order_by(Anime.score.desc())
+        .limit(10)
+    )
 
     return list(map(lambda anime: anime.as_dict(), animes))
 
 
-def get_bot_animes_txn(session):
-    animes = session.query(Anime).order_by(Anime.score.asc()).limit(10)
+def get_bot_animes_txn(session, genre):
+    animes = (
+        session.query(Anime)
+        .filter(Anime.genre.contains(array([genre])))
+        .order_by(Anime.score.asc())
+        .limit(10)
+    )
 
     return list(map(lambda anime: anime.as_dict(), animes))
 
@@ -136,3 +146,14 @@ def get_rec_for_genre_txn(session, genre):
     chosen = random.choices(temp, k=10)
 
     return chosen
+
+
+def get_fixed_animes_txn(session):
+    animes = (
+        session.query(Anime)
+        .filter(Anime.id.in_((40269, 6421, 2004, 30015, 889, 21, 38000)))
+        .order_by(Anime.score.asc())
+        .limit(10)
+    )
+
+    return list(map(lambda anime: anime.as_dict(), animes))

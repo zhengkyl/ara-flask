@@ -1,7 +1,6 @@
 import random
 from ara_flask.models import Anime
-from sqlalchemy import and_, func, or_
-from random import randrange
+from sqlalchemy import func
 
 recently_rated = []
 

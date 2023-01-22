@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS animes (
       aired STRING,
       episodes INTEGER,
       members INTEGER,
-      popularity REAL,
+      popularity INTEGER,
       ranked INTEGER,
       score REAL,
       img_url STRING,

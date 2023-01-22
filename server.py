@@ -38,16 +38,16 @@ def add_anime():
     ara.add_anime(
         int(body["id"]),
         body["title"],
-        body["synopsis"],
-        body["genre"],
-        body["aired"],
-        int(body["episodes"]),
-        int(body["members"]),
-        float(body["popularity"]),
-        int(body["ranked"]),
-        float(body["score"]),
-        body["img_url"],
-        body["link"],
+        body.get("synopsis", ""),
+        body.get("genre", []),
+        body.get("aired", ""),
+        int(body.get("episodes", 0)),
+        int(body.get("members", 1)),
+        int(body.get("popularity", 10000)),
+        int(body.get("ranked", 10000)),
+        float(body.get("score", 0)),
+        body.get("img_url", ""),
+        body.get("link", ""),
     )
     return ("", 204)
 

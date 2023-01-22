@@ -125,7 +125,12 @@ def get_recently_rated_txn(session):
 
 
 def get_rec_for_genre_txn(session, genre):
-    animes = session.query(Anime).filter(Anime.genre.contains([genre])).limit(100)
+    animes = (
+        session.query(Anime)
+        .filter(Anime.genre.contains([genre]))
+        .order_by(Anime.members.desc())
+        .limit(100)
+    )
     temp = list(map(lambda anime: anime.as_dict(), animes))
     chosen = random.choices(temp, k=10)
 

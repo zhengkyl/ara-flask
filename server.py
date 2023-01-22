@@ -36,16 +36,16 @@ def add_anime():
     body = request.json
 
     ara.add_anime(
-        body["id"],
+        int(body["id"]),
         body["title"],
         body["synopsis"],
         body["genre"],
         body["aired"],
         int(body["episodes"]),
         int(body["members"]),
-        body["popularity"],
+        float(body["popularity"]),
         int(body["ranked"]),
-        body["score"],
+        float(body["score"]),
         body["img_url"],
         body["link"],
     )

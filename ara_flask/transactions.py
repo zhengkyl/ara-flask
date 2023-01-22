@@ -1,6 +1,7 @@
 import random
 from ara_flask.models import Anime
-from sqlalchemy import func
+from sqlalchemy import String, cast, func
+from sqlalchemy.dialects.postgresql import array, ARRAY
 
 recently_rated = []
 
@@ -126,11 +127,12 @@ def get_recently_rated_txn(session):
 def get_rec_for_genre_txn(session, genre):
     animes = (
         session.query(Anime)
-        .filter(Anime.genre.contains([genre]))
+        .filter(Anime.genre.contains(array([genre])))
         .order_by(Anime.members.desc())
         .limit(100)
     )
+
     temp = list(map(lambda anime: anime.as_dict(), animes))
     chosen = random.choices(temp, k=10)
 
-    return chosen
+    return temp[0:10]

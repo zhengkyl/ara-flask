@@ -35,7 +35,7 @@ with open("animes.csv") as csvfile:
                 row[4],
                 int(float(row[5])) if row[5] else 0,
                 int(float(row[6])) if row[6] else 0,
-                row[7],
+                int(float(row[7])) if row[7] else 0,
                 int(float(row[8])) if row[8] else 0,
                 row[9],
                 row[10],

@@ -135,4 +135,4 @@ def get_rec_for_genre_txn(session, genre):
     temp = list(map(lambda anime: anime.as_dict(), animes))
     chosen = random.choices(temp, k=10)
 
-    return temp[0:10]
+    return chosen

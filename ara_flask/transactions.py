@@ -151,7 +151,9 @@ def get_rec_for_genre_txn(session, genre):
 def get_fixed_animes_txn(session):
     animes = (
         session.query(Anime)
-        .filter(Anime.id.in_((40269, 6421, 2004, 30015, 889, 21, 38000)))
+        .filter(
+            Anime.id.in_((21, 1735, 269, 16498, 38000, 5114, 11061, 1535, 223, 47917))
+        )
         .order_by(Anime.score.asc())
         .limit(10)
     )

@@ -4,6 +4,7 @@ from ara_flask.ara import Ara
 from flask import Flask, abort, jsonify, request
 from dotenv import load_dotenv
 from flask_cors import CORS
+import requests
 
 load_dotenv()
 
@@ -29,6 +30,37 @@ def get_anime():
         abort(404)
 
     return jsonify(a.as_dict())
+
+
+@app.route("/import", methods=["POST"])
+def import_anime():
+    args = request.args
+    id = args.get("id")
+    r = requests.get(
+        "https://api.myanimelist.net/v2/anime/"
+        + id
+        + "?fields=synopsis,rank,popularity,num_list_users,mean,genres,num_episodes",
+        headers={"X-MAL-CLIENT-ID": os.environ["MAL_CLIENT_ID"]},
+    )
+
+    data = r.json()
+
+    ara.add_anime(
+        data["id"],
+        data["title"],
+        data["synopsis"],
+        list(map(lambda obj: obj["name"], data["genres"])),
+        "",
+        int(data.get("num_episodes", 0)),
+        int(data.get("num_list_users", 1)),
+        int(data.get("popularity", 10000)),
+        int(data.get("ranked", 10000)),
+        float(data.get("mean", 0)),
+        data["main_picture"].get("medium", ""),
+        "https://myanimelist.net/anime/" + str(data["id"]),
+    )
+
+    return ("", 204)
 
 
 @app.route("/anime", methods=["POST"])

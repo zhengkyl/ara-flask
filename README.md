@@ -1,6 +1,6 @@
 # ara-flask
 
-anime service built with flask and cockroachdb\* and hosted at https://ara-flask-production.up.railway.app/
+anime service built with flask and cockroachdb\* and hosted at ~~https://ara-flask-production.up.railway.app/~~ (deleted)
 
 \*actually just postgresql until cockroachdb issue is resolved
 
